@@ -1,6 +1,7 @@
 from .utils.compatibility import *
 from .utils.base import Base64
 from .utils.binary import BinaryAscii
+from .utils.der import fromPem, toPem
 from .utils.der import encodeSequence, encodeInteger, removeSequence, removeInteger
 
 
@@ -15,6 +16,13 @@ class Signature:
 
     def toBase64(self):
         return toString(Base64.encode(toBytes(self.toDer())))
+    
+    def toPem(self):
+        return toPem(der=toBytes(self.toDer()), name="SIG")
+
+    @classmethod
+    def fromPem(cls, string):
+        return cls.fromDer(fromPem(string))
 
     @classmethod
     def fromDer(cls, string):
